@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+<title>Chrome Dino</title>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+    }
+
+    .parent {
+      position: relative;
+      /* Set position to relative */
+      display: flex;
+      justify-content: center;
+      z-index: 1;
+      /* Increase the z-index */
+    }
+
+    .overlay-iframe {
+      position: absolute;
+      z-index: 2;
+      /* Ensure iframe is above the image */
+      top: 0;
+      left: 0;
+      border: 0;
+      height: 540px;
+      width: 820px;
+      transform: translateX(210px) translateY(20px);
+    }
+
+    img {
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      z-index: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .box {
+      position: absolute;
+      z-index: 2;
+      height: 37px;
+      width: 100px;
+      background-color: #e9edf0;
+      transform: translateX(858px) translateY(25px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <img src="dino-bg-image.png" alt="background" />
+
+  <!-- Uncomment the iframe when you want to use it -->
+  <div class="parent">
+    <iframe class="overlay-iframe" src="https://scratch.mit.edu/projects/957176284/embed" frameborder="0" scrolling="no"
+      allow="microphone" allowfullscreen></iframe>
+  </div>
+  <!-- Add voice recognition script -->
+  <script>
+    // Check if the browser supports the Web Speech API
+    if ('webkitSpeechRecognition' in window) {
+      var recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onresult = function (event) {
+        var transcript = event.results[0][0].transcript.toLowerCase();
+        // You can customize the voice commands to trigger specific actions
+        if (transcript.includes('play')) {
+          // Trigger play action for the game
+          alert('Playing the game!');
+        }
+      };
+
+      recognition.onerror = function (event) {
+        console.error('Speech recognition error:', event.error);
+      };
+
+      // Start listening when the page loads
+      window.onload = function () {
+        recognition.start();
+      };
+    } else {
+      console.error('Web Speech API is not supported in this browser.');
+    }
+  </script>
+</body>
+
+</html>

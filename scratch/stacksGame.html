@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
+<title>Stack Game</title>
+
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/LLK/scratch-vm@latest/dist/virtual_machine.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+    }
+
+    .parent {
+      position: relative;
+      /* Set position to relative */
+      display: flex;
+      justify-content: center;
+      z-index: 1;
+      /* Increase the z-index */
+    }
+
+    .overlay-iframe {
+      position: absolute;
+      z-index: 2;
+      /* Ensure iframe is above the image */
+      top: 50%;
+      left: 50%;
+      border: 0;
+      height: 540px;
+      width: 820px;
+      transform: translateX(-50%);
+    }
+
+    img {
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      z-index: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .box {
+      position: absolute;
+      z-index: 2;
+      top: -4%;
+      right: 93%;
+      height: 38px;
+      width: 15%;
+      background-color: #e9edf0;
+      transform: translateX(858px) translateY(25px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <img src="stack-bg-image.png" alt="background" />
+
+  <!-- Uncomment the iframe when you want to use it -->
+  <div class="parent">
+    <iframe class="overlay-iframe" src="https://scratch.mit.edu/projects/957403075/embed" frameborder="0" scrolling="no"
+      allow="microphone" allowfullscreen></iframe>
+  </div>
+  <!-- Add voice recognition script -->
+  <script>
+    // Check if the browser supports the Web Speech API
+    if ("SpeechRecognition" in window) {
+      var recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onresult = function (event) {
+        var transcript = event.results[0][0].transcript.toLowerCase();
+        // You can customize the voice commands to trigger specific actions
+        if (transcript.includes("play")) {
+          // Trigger play action for the game
+          alert("Playing the game!");
+        }
+      };
+
+      recognition.onerror = function (event) {
+        console.error("Speech recognition error:", event.error);
+      };
+
+      // Start listening when the user clicks a button
+      function startListening() {
+        recognition.start();
+      }
+
+      // Request microphone access and start listening when the page loads
+      window.onload = function () {
+        navigator.mediaDevices
+          .getUserMedia({ audio: true })
+          .then(function () {
+            startListening();
+          })
+          .catch(function (error) {
+            console.error("Error accessing microphone:", error);
+          });
+      };
+    } else {
+      console.error("Web Speech API is not supported in this browser.");
+    }
+  </script>
+</body>
+
+</html>
